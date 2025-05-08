@@ -26,19 +26,19 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				sky: {
-					DEFAULT: "#0EA5E9",
-					light: "#D3E4FD",
-					dark: "#0284c7",
+					DEFAULT: "#3B82F6", // Changed to a more vibrant blue
+					light: "#BFDBFE",
+					dark: "#1D4ED8",
 				},
 				navy: {
-					DEFAULT: "#1A1F2C",
-					light: "#2C3648",
-					dark: "#121620",
+					DEFAULT: "#1E293B",
+					light: "#334155",
+					dark: "#0F172A",
 				},
 				accent: {
-					DEFAULT: "#F97316",
-					light: "#FDBA74",
-					dark: "#C2410C",
+					DEFAULT: "#10B981", // Changed to green
+					light: "#A7F3D0",
+					dark: "#059669",
 					foreground: "hsl(var(--accent-foreground))"
 				},
 				primary: {
@@ -109,6 +109,10 @@ export default {
 				"pulse-slow": {
 					"0%, 100%": { opacity: "1" },
 					"50%": { opacity: "0.5" }
+				},
+				"content-load": {
+					"0%": { opacity: "0", transform: "translateY(30px)" },
+					"100%": { opacity: "1", transform: "translateY(0)" }
 				}
 			},
 			animation: {
@@ -118,7 +122,8 @@ export default {
 				"fade-up": "fade-up 0.5s ease-out forwards",
 				"fade-down": "fade-down 0.5s ease-out forwards",
 				"slide-in": "slide-in 0.5s ease-out forwards",
-				"pulse-slow": "pulse-slow 2s infinite"
+				"pulse-slow": "pulse-slow 2s infinite",
+				"content-load": "content-load 0.8s ease-out forwards"
 			}
 		}
 	},

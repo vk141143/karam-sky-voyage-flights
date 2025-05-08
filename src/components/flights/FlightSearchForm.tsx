@@ -12,7 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar, MapPin, Users, Search } from "lucide-react";
+import { MapPin, Calendar, Search } from "lucide-react";
+import { useLanguage } from "@/components/language/LanguageProvider";
+import PassengerSelector from "./PassengerSelector";
 
 interface FlightSearchFormProps {
   onSearch: (searchData: any) => void;
@@ -20,13 +22,19 @@ interface FlightSearchFormProps {
 }
 
 const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) => {
+  const { t } = useLanguage();
   const [tripType, setTripType] = useState("round");
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departDate, setDepartDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [passengers, setPassengers] = useState("1");
   const [cabinClass, setCabinClass] = useState("economy");
+  const [passengerCounts, setPassengerCounts] = useState({
+    adults: 1,
+    children: 0,
+    infants: 0,
+    seniors: 0
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,24 +44,24 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
       destination,
       departDate,
       returnDate,
-      passengers,
+      passengerCounts,
       cabinClass,
     });
   };
 
   return (
-    <Card className={`bg-white shadow-lg rounded-xl ${className}`}>
+    <Card className={`bg-white shadow-lg rounded-xl ${className} dark:bg-navy`}>
       <div className="p-6">
         <Tabs defaultValue={tripType} onValueChange={setTripType}>
           <TabsList className="grid grid-cols-2 mb-6">
-            <TabsTrigger value="round">Round Trip</TabsTrigger>
-            <TabsTrigger value="oneway">One Way</TabsTrigger>
+            <TabsTrigger value="round">{t("Round Trip")}</TabsTrigger>
+            <TabsTrigger value="oneway">{t("One Way")}</TabsTrigger>
           </TabsList>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 animate-content-load" style={{animationDelay: "0.2s"}}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="origin">From</Label>
+                <Label htmlFor="origin">{t("from")}</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
@@ -68,7 +76,7 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="destination">To</Label>
+                <Label htmlFor="destination">{t("to")}</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
@@ -85,7 +93,7 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="departDate">Departure Date</Label>
+                <Label htmlFor="departDate">{t("departDate")}</Label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
@@ -101,7 +109,7 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
               
               {tripType === "round" && (
                 <div className="space-y-2">
-                  <Label htmlFor="returnDate">Return Date</Label>
+                  <Label htmlFor="returnDate">{t("returnDate")}</Label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
@@ -119,26 +127,15 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="passengers">Passengers</Label>
-                <div className="relative">
-                  <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-                  <Select value={passengers} onValueChange={setPassengers}>
-                    <SelectTrigger className="pl-10">
-                      <SelectValue placeholder="Select passengers" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
-                        <SelectItem key={num} value={num.toString()}>
-                          {num} {num === 1 ? 'passenger' : 'passengers'}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Label htmlFor="passengers">{t("passengers")}</Label>
+                <PassengerSelector 
+                  value={passengerCounts} 
+                  onChange={setPassengerCounts} 
+                />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="cabinClass">Cabin Class</Label>
+                <Label htmlFor="cabinClass">{t("cabinClass")}</Label>
                 <Select value={cabinClass} onValueChange={setCabinClass}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select class" />
@@ -153,9 +150,9 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
               </div>
             </div>
             
-            <Button type="submit" size="lg" className="w-full bg-sky hover:bg-sky-dark">
+            <Button type="submit" size="lg" className="w-full bg-accent hover:bg-accent-dark">
               <Search className="mr-2 h-4 w-4" />
-              Search Flights
+              {t("searchFlights")}
             </Button>
           </form>
         </Tabs>
