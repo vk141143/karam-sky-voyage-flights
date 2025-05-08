@@ -26,17 +26,17 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				sky: {
-					DEFAULT: "#3B82F6", // Changed to a more vibrant blue
+					DEFAULT: "#4285F4", // Google blue
 					light: "#BFDBFE",
 					dark: "#1D4ED8",
 				},
 				navy: {
-					DEFAULT: "#1E293B",
-					light: "#334155",
-					dark: "#0F172A",
+					DEFAULT: "#202124", // Dark charcoal
+					light: "#5F6368",
+					dark: "#0D1117",
 				},
 				accent: {
-					DEFAULT: "#10B981", // Changed to green
+					DEFAULT: "#10B981", // Professional green
 					light: "#A7F3D0",
 					dark: "#059669",
 					foreground: "hsl(var(--accent-foreground))"
@@ -118,12 +118,12 @@ export default {
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
 				"accordion-up": "accordion-up 0.2s ease-out",
-				"fade-in": "fade-in 0.5s ease-out forwards",
-				"fade-up": "fade-up 0.5s ease-out forwards",
-				"fade-down": "fade-down 0.5s ease-out forwards",
+				"fade-in": "fade-in 0.8s ease-out forwards",
+				"fade-up": "fade-up 0.8s ease-out forwards",
+				"fade-down": "fade-down 0.8s ease-out forwards",
 				"slide-in": "slide-in 0.5s ease-out forwards",
 				"pulse-slow": "pulse-slow 2s infinite",
-				"content-load": "content-load 0.8s ease-out forwards"
+				"content-load": "content-load 1s ease-out forwards"
 			}
 		}
 	},

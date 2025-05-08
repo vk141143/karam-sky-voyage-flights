@@ -12,9 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, Calendar, Search } from "lucide-react";
+import { MapPin, Calendar, Search, Users } from "lucide-react";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import PassengerSelector from "./PassengerSelector";
+import { motion } from "framer-motion";
 
 interface FlightSearchFormProps {
   onSearch: (searchData: any) => void;
@@ -50,24 +51,28 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
   };
 
   return (
-    <Card className={`bg-white shadow-lg rounded-xl ${className} dark:bg-navy`}>
+    <Card className={`bg-white ${className}`}>
       <div className="p-6">
         <Tabs defaultValue={tripType} onValueChange={setTripType}>
-          <TabsList className="grid grid-cols-2 mb-6">
-            <TabsTrigger value="round">{t("Round Trip")}</TabsTrigger>
-            <TabsTrigger value="oneway">{t("One Way")}</TabsTrigger>
+          <TabsList className="grid grid-cols-2 mb-6 bg-gray-100">
+            <TabsTrigger value="round" className="data-[state=active]:bg-accent data-[state=active]:text-white">
+              {t("Round Trip")}
+            </TabsTrigger>
+            <TabsTrigger value="oneway" className="data-[state=active]:bg-accent data-[state=active]:text-white">
+              {t("One Way")}
+            </TabsTrigger>
           </TabsList>
           
           <form onSubmit={handleSubmit} className="space-y-6 animate-content-load" style={{animationDelay: "0.2s"}}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="origin">{t("from")}</Label>
+                <Label htmlFor="origin" className="text-gray-700 font-medium">{t("from")}</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
                     id="origin"
                     placeholder="City or Airport"
-                    className="pl-10"
+                    className="pl-10 bg-gray-50 border-gray-200 focus:border-accent"
                     value={origin}
                     onChange={(e) => setOrigin(e.target.value)}
                     required
@@ -76,13 +81,13 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="destination">{t("to")}</Label>
+                <Label htmlFor="destination" className="text-gray-700 font-medium">{t("to")}</Label>
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
                     id="destination"
                     placeholder="City or Airport"
-                    className="pl-10"
+                    className="pl-10 bg-gray-50 border-gray-200 focus:border-accent"
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     required
@@ -93,13 +98,13 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="departDate">{t("departDate")}</Label>
+                <Label htmlFor="departDate" className="text-gray-700 font-medium">{t("departDate")}</Label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
                     id="departDate"
                     type="date"
-                    className="pl-10"
+                    className="pl-10 bg-gray-50 border-gray-200 focus:border-accent"
                     value={departDate}
                     onChange={(e) => setDepartDate(e.target.value)}
                     required
@@ -109,13 +114,13 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
               
               {tripType === "round" && (
                 <div className="space-y-2">
-                  <Label htmlFor="returnDate">{t("returnDate")}</Label>
+                  <Label htmlFor="returnDate" className="text-gray-700 font-medium">{t("returnDate")}</Label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
                       id="returnDate"
                       type="date"
-                      className="pl-10"
+                      className="pl-10 bg-gray-50 border-gray-200 focus:border-accent"
                       value={returnDate}
                       onChange={(e) => setReturnDate(e.target.value)}
                       required={tripType === "round"}
@@ -127,17 +132,17 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="passengers">{t("passengers")}</Label>
+                <Label htmlFor="passengers" className="text-gray-700 font-medium">{t("passengers")}</Label>
                 <PassengerSelector 
                   value={passengerCounts} 
-                  onChange={setPassengerCounts} 
+                  onChange={setPassengerCounts}
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="cabinClass">{t("cabinClass")}</Label>
+                <Label htmlFor="cabinClass" className="text-gray-700 font-medium">{t("cabinClass")}</Label>
                 <Select value={cabinClass} onValueChange={setCabinClass}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-gray-50 border-gray-200">
                     <SelectValue placeholder="Select class" />
                   </SelectTrigger>
                   <SelectContent>
