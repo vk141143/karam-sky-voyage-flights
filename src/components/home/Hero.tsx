@@ -1,20 +1,15 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Search, Calendar, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import FlightSearchForm from "@/components/flights/FlightSearchForm";
 
 const Hero = () => {
   return (
     <section className="relative bg-gradient-to-b from-white to-gray-50 pt-28 pb-16 md:pt-32 md:pb-20">
-      {/* Subtle background patterns */}
-      <div className="absolute top-10 left-10 w-24 h-24 rounded-full bg-accent/5"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-accent/5"></div>
-      <div className="absolute top-40 right-20 w-16 h-16 rounded-full bg-accent/5"></div>
+      {/* Background patterns - subtle and professional */}
+      <div className="absolute top-10 left-10 w-24 h-24 rounded-full bg-gray-100 opacity-70"></div>
+      <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-gray-100 opacity-70"></div>
+      <div className="absolute top-40 right-20 w-16 h-16 rounded-full bg-gray-100 opacity-70"></div>
       
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8">
@@ -28,8 +23,8 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Search Form - MakeMyTrip style */}
-          <Card className="bg-white rounded-2xl shadow-xl mx-auto w-full max-w-4xl border-0">
+          {/* Search Form - MakeMyTrip style with shadow */}
+          <Card className="bg-white rounded-2xl shadow-xl mx-auto w-full max-w-4xl border-0 transform transition-all duration-500 hover:shadow-2xl">
             <FlightSearchForm onSearch={(data) => console.log(data)} className="p-0" />
           </Card>
         </div>

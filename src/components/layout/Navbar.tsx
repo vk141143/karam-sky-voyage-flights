@@ -43,7 +43,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="font-bold text-2xl text-navy dark:text-white">
-            Sky<span className="text-sky">Voyage</span>
+            Sky<span className="text-accent">Voyage</span>
           </span>
         </Link>
 
@@ -54,7 +54,7 @@ const Navbar = () => {
               <Link
                 key={item.title}
                 to={item.href}
-                className="text-gray-700 dark:text-gray-200 hover:text-sky dark:hover:text-sky text-base font-medium underline-link"
+                className="text-gray-700 dark:text-gray-200 hover:text-accent dark:hover:text-accent transition-colors duration-200 text-base font-medium"
               >
                 {item.title}
               </Link>
@@ -67,12 +67,12 @@ const Navbar = () => {
           <ThemeToggle />
           <LanguageSelector />
           
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200">
             <Link to="/login">
               <User size={16} className="mr-1" /> {t("login")}
             </Link>
           </Button>
-          <Button size="sm" asChild>
+          <Button size="sm" asChild className="bg-accent hover:bg-accent-dark text-white transition-all duration-200">
             <Link to="/signup">{t("signup")}</Link>
           </Button>
         </div>
@@ -99,19 +99,19 @@ const Navbar = () => {
               <Link
                 key={item.title}
                 to={item.href}
-                className="text-gray-700 dark:text-gray-200 hover:text-sky dark:hover:text-sky py-2 font-medium"
+                className="text-gray-700 dark:text-gray-200 hover:text-accent dark:hover:text-accent py-2 font-medium transition-colors duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.title}
               </Link>
             ))}
             <div className="flex flex-col gap-2 pt-4 border-t dark:border-gray-700">
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200">
                 <Link to="/login">
                   <User size={16} className="mr-1" /> {t("login")}
                 </Link>
               </Button>
-              <Button size="sm" asChild>
+              <Button size="sm" asChild className="bg-accent hover:bg-accent-dark text-white transition-all duration-200">
                 <Link to="/signup">{t("signup")}</Link>
               </Button>
             </div>

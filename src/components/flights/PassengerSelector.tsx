@@ -22,12 +22,6 @@ interface PassengerCounts {
   seniors: number;
 }
 
-interface PassengerDetails {
-  type: string;
-  count: number;
-  names: string[];
-}
-
 interface PassengerSelectorProps {
   onChange: (counts: PassengerCounts) => void;
   value: PassengerCounts;
@@ -107,27 +101,27 @@ export default function PassengerSelector({ onChange, value }: PassengerSelector
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="relative w-full">
-          <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+        <div className="relative w-full group">
+          <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 group-hover:text-accent transition-colors duration-200" />
           <Input
             readOnly
-            className="pl-10 cursor-pointer bg-gray-50 border-gray-200"
+            className="pl-10 cursor-pointer bg-gray-50 border-gray-200 hover:border-gray-300 transition-colors duration-200"
             value={`${totalPassengers} ${totalPassengers === 1 ? 'Passenger' : 'Passengers'}`}
           />
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl">Passenger Information</DialogTitle>
+          <DialogTitle className="text-xl font-medium">Passenger Information</DialogTitle>
         </DialogHeader>
         
         <div className="mt-4">
           <Tabs defaultValue="adults" value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
             <TabsList className="grid grid-cols-4 mb-4">
-              <TabsTrigger value="adults" className="text-xs sm:text-sm">Adults</TabsTrigger>
-              <TabsTrigger value="children" className="text-xs sm:text-sm">Children</TabsTrigger>
-              <TabsTrigger value="infants" className="text-xs sm:text-sm">Infants</TabsTrigger>
-              <TabsTrigger value="seniors" className="text-xs sm:text-sm">Seniors</TabsTrigger>
+              <TabsTrigger value="adults" className="text-xs sm:text-sm transition-all duration-200">Adults</TabsTrigger>
+              <TabsTrigger value="children" className="text-xs sm:text-sm transition-all duration-200">Children</TabsTrigger>
+              <TabsTrigger value="infants" className="text-xs sm:text-sm transition-all duration-200">Infants</TabsTrigger>
+              <TabsTrigger value="seniors" className="text-xs sm:text-sm transition-all duration-200">Seniors</TabsTrigger>
             </TabsList>
             
             {(Object.keys(counts) as Array<keyof PassengerCounts>).map((type) => (
@@ -141,18 +135,18 @@ export default function PassengerSelector({ onChange, value }: PassengerSelector
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="h-8 w-8"
+                      className="h-8 w-8 hover:bg-gray-100 transition-colors duration-200"
                       onClick={() => handleCountChange(type, -1)}
                       disabled={(type === "adults" && counts[type] <= 1) || counts[type] <= 0}
                     >
                       -
                     </Button>
-                    <span className="w-6 text-center">{counts[type]}</span>
+                    <span className="w-6 text-center font-medium">{counts[type]}</span>
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="h-8 w-8"
+                      className="h-8 w-8 hover:bg-gray-100 transition-colors duration-200"
                       onClick={() => handleCountChange(type, 1)}
                       disabled={counts[type] >= 9}
                     >
@@ -173,6 +167,7 @@ export default function PassengerSelector({ onChange, value }: PassengerSelector
                         placeholder="Full Name"
                         value={passengerDetails[type][index] || ""}
                         onChange={(e) => handleNameChange(type, index, e.target.value)}
+                        className="hover:border-gray-300 transition-colors duration-200"
                       />
                     </div>
                   ))}
@@ -182,11 +177,11 @@ export default function PassengerSelector({ onChange, value }: PassengerSelector
           </Tabs>
         </div>
         
-        <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} className="mt-2 sm:mt-0">
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setOpen(false)} className="mt-2 sm:mt-0 hover:bg-gray-100 transition-colors duration-200">
             Cancel
           </Button>
-          <Button onClick={handleApply}>
+          <Button onClick={handleApply} className="bg-accent hover:bg-accent-dark transition-colors duration-200">
             Apply
           </Button>
         </DialogFooter>

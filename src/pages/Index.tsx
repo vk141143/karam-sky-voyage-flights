@@ -42,7 +42,7 @@ const Index = () => {
             {
               root: null,
               rootMargin: "0px",
-              threshold: 0.1,
+              threshold: 0.15, // Increased threshold for more visible entry
             }
           );
 
@@ -73,23 +73,23 @@ const Index = () => {
       <main className="flex-1">
         <Hero />
         
-        <div ref={featuresRef} className="opacity-0">
+        <div ref={featuresRef} className="opacity-0 transition-opacity duration-700">
           <Features />
         </div>
         
-        <div ref={destinationsRef} className="opacity-0">
+        <div ref={destinationsRef} className="opacity-0 transition-opacity duration-700">
           <PopularDestinations />
         </div>
         
-        <div ref={offersRef} className="opacity-0" id="offers">
+        <div ref={offersRef} className="opacity-0 transition-opacity duration-700" id="offers">
           <SpecialOffers />
         </div>
         
-        <div ref={testimonialsRef} className="opacity-0">
+        <div ref={testimonialsRef} className="opacity-0 transition-opacity duration-700">
           <Testimonials />
         </div>
         
-        <div ref={newsletterRef} className="opacity-0">
+        <div ref={newsletterRef} className="opacity-0 transition-opacity duration-700">
           <NewsletterSection />
         </div>
       </main>

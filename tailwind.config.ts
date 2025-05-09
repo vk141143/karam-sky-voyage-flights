@@ -26,19 +26,19 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				sky: {
-					DEFAULT: "#4285F4", // Google blue
-					light: "#BFDBFE",
-					dark: "#1D4ED8",
+					DEFAULT: "#0E86D4", // Professional blue
+					light: "#B3E0FF",
+					dark: "#055C9D",
 				},
 				navy: {
-					DEFAULT: "#202124", // Dark charcoal
-					light: "#5F6368",
-					dark: "#0D1117",
+					DEFAULT: "#2C3E50", // Professional dark blue
+					light: "#546E7A",
+					dark: "#1A2530",
 				},
 				accent: {
-					DEFAULT: "#10B981", // Professional green
-					light: "#A7F3D0",
-					dark: "#059669",
+					DEFAULT: "#FF5722", // Vibrant orange for accents
+					light: "#FFAB91",
+					dark: "#E64A19",
 					foreground: "hsl(var(--accent-foreground))"
 				},
 				primary: {

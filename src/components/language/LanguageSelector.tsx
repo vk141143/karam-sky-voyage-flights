@@ -31,7 +31,7 @@ export default function LanguageSelector() {
       <TooltipTrigger asChild>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="relative gap-1 rounded-full px-2">
+            <Button variant="ghost" size="sm" className="relative gap-1 rounded-full px-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
               <Globe className="h-4 w-4" />
               <span>{getCurrentLanguageShort()}</span>
             </Button>
@@ -41,7 +41,7 @@ export default function LanguageSelector() {
               <DropdownMenuItem
                 key={lang}
                 onClick={() => setLanguage(lang)}
-                className={language === lang ? "bg-accent/10 font-medium" : ""}
+                className={`${language === lang ? "bg-accent/10 font-medium" : ""} hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200`}
               >
                 {getLanguageName(lang)}
               </DropdownMenuItem>
