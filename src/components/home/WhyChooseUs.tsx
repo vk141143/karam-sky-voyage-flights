@@ -31,28 +31,28 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-navy mb-4">Why Choose SkyVoyage?</h2>
-          <p className="text-gray-600">
+          <h2 className="text-navy dark:text-white mb-4">Why Choose SkyVoyage?</h2>
+          <p className="text-gray-600 dark:text-gray-300">
             We provide an exceptional travel experience with premium features designed for your comfort and convenience.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="border border-gray-200 overflow-hidden hover-lift">
+            <Card key={index} className="border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift dark:bg-gray-800">
               <CardContent className="p-6">
                 <div className="flex items-start">
                   <div className="mr-4 mt-1">
-                    <div className="bg-accent/10 p-2 rounded-full">
+                    <div className="bg-accent/10 dark:bg-accent/20 p-2 rounded-full">
                       <Check className="h-5 w-5 text-accent" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <h3 className="text-lg font-semibold mb-2 dark:text-white">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
                   </div>
                 </div>
               </CardContent>

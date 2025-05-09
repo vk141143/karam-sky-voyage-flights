@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -10,6 +10,7 @@ import { useLanguage } from "@/components/language/LanguageProvider";
 
 const Navbar = () => {
   const { t } = useLanguage();
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -66,7 +67,7 @@ const Navbar = () => {
           <ThemeToggle />
           <LanguageSelector />
           
-          <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200">
+          <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200 dark:border-gray-700 dark:text-white">
             <Link to="/login">
               <User size={16} className="mr-1" /> {t("login")}
             </Link>
@@ -105,7 +106,7 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="flex flex-col gap-2 pt-4 border-t dark:border-gray-700">
-              <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200">
+              <Button variant="outline" size="sm" asChild className="border-gray-200 hover:border-gray-300 transition-all duration-200 dark:border-gray-700 dark:text-white">
                 <Link to="/login">
                   <User size={16} className="mr-1" /> {t("login")}
                 </Link>

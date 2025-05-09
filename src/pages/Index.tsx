@@ -6,7 +6,6 @@ import Hero from "@/components/home/Hero";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import PopularDestinations from "@/components/home/PopularDestinations";
 import Testimonials from "@/components/home/Testimonials";
-import NewsletterSection from "@/components/home/NewsletterSection";
 import SpecialOffers from "@/components/home/SpecialOffers";
 
 const Index = () => {
@@ -20,7 +19,6 @@ const Index = () => {
   const destinationsRef = useRef<HTMLDivElement>(null);
   const offersRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
-  const newsletterRef = useRef<HTMLDivElement>(null);
 
   // Function to check if element is in viewport
   const useIntersectionObserver = (refs: React.RefObject<HTMLElement>[]) => {
@@ -64,7 +62,6 @@ const Index = () => {
     destinationsRef,
     offersRef,
     testimonialsRef,
-    newsletterRef,
   ]);
 
   return (
@@ -87,10 +84,6 @@ const Index = () => {
         
         <div ref={testimonialsRef} className="opacity-0 transition-opacity duration-700">
           <Testimonials />
-        </div>
-        
-        <div ref={newsletterRef} className="opacity-0 transition-opacity duration-700">
-          <NewsletterSection />
         </div>
       </main>
       <Footer />

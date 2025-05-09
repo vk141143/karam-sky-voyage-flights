@@ -13,6 +13,8 @@ import { LanguageProvider } from "./components/language/LanguageProvider";
 const Index = lazy(() => import("./pages/Index"));
 const FlightsPage = lazy(() => import("./pages/FlightsPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
+const ManageBookingsPage = lazy(() => import("./pages/ManageBookingsPage"));
+const SupportPage = lazy(() => import("./pages/SupportPage"));
 
 // Create a Query client
 const queryClient = new QueryClient();
@@ -40,7 +42,8 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/flights" element={<FlightsPage />} />
                 <Route path="/login" element={<LoginPage />} />
-                {/* Add other routes here as we develop them */}
+                <Route path="/manage-bookings" element={<ManageBookingsPage />} />
+                <Route path="/support" element={<SupportPage />} />
                 {/* Catch-all route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

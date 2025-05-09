@@ -58,16 +58,16 @@ const SpecialOffers = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div className="max-w-2xl">
-            <h2 className="text-navy mb-4">Special Offers & Deals</h2>
-            <p className="text-gray-600">
+            <h2 className="text-navy dark:text-white mb-4">Special Offers & Deals</h2>
+            <p className="text-gray-600 dark:text-gray-300">
               Take advantage of our limited-time offers and save on your next flight booking.
             </p>
           </div>
-          <Button variant="outline" asChild className="mt-4 md:mt-0">
+          <Button variant="outline" asChild className="mt-4 md:mt-0 dark:border-gray-700 dark:text-white">
             <Link to="/offers">View All Offers</Link>
           </Button>
         </div>
@@ -76,26 +76,26 @@ const SpecialOffers = () => {
           {offers.map((offer, index) => (
             <Card 
               key={offer.id} 
-              className={`border border-gray-200 overflow-hidden hover-lift transition-all duration-500 ${
+              className={`border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift transition-all duration-500 dark:bg-gray-800 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold">{offer.title}</h3>
-                  <Badge variant="secondary" className="bg-sky-light text-sky">
+                  <h3 className="text-xl font-semibold dark:text-white">{offer.title}</h3>
+                  <Badge variant="secondary" className="bg-sky-light text-sky dark:bg-sky/20">
                     {offer.badge}
                   </Badge>
                 </div>
-                <p className="text-gray-600 mb-4">{offer.description}</p>
-                <div className="bg-gray-50 p-3 rounded-lg mb-4 text-center">
-                  <span className="block text-sm text-gray-500">Use code:</span>
-                  <span className="font-mono text-lg font-bold">{offer.code}</span>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{offer.description}</p>
+                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg mb-4 text-center">
+                  <span className="block text-sm text-gray-500 dark:text-gray-400">Use code:</span>
+                  <span className="font-mono text-lg font-bold dark:text-white">{offer.code}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-accent font-bold text-xl">{offer.discount}</span>
-                  <span className="text-sm text-gray-500">{offer.expiry}</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{offer.expiry}</span>
                 </div>
               </CardContent>
             </Card>
