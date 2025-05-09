@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/home/Hero";
-import Features from "@/components/home/Features";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 import PopularDestinations from "@/components/home/PopularDestinations";
 import Testimonials from "@/components/home/Testimonials";
 import NewsletterSection from "@/components/home/NewsletterSection";
@@ -16,7 +16,7 @@ const Index = () => {
   }, []);
 
   // References to sections
-  const featuresRef = useRef<HTMLDivElement>(null);
+  const whyChooseUsRef = useRef<HTMLDivElement>(null);
   const destinationsRef = useRef<HTMLDivElement>(null);
   const offersRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,7 @@ const Index = () => {
 
   // Apply the observer
   useIntersectionObserver([
-    featuresRef,
+    whyChooseUsRef,
     destinationsRef,
     offersRef,
     testimonialsRef,
@@ -73,8 +73,8 @@ const Index = () => {
       <main className="flex-1">
         <Hero />
         
-        <div ref={featuresRef} className="opacity-0 transition-opacity duration-700">
-          <Features />
+        <div ref={whyChooseUsRef} className="opacity-0 transition-opacity duration-700">
+          <WhyChooseUs />
         </div>
         
         <div ref={destinationsRef} className="opacity-0 transition-opacity duration-700">

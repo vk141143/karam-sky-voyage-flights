@@ -7,6 +7,7 @@ import FlightSearchForm from "@/components/flights/FlightSearchForm";
 import FlightFilter from "@/components/flights/FlightFilter";
 import FlightCard from "@/components/flights/FlightCard";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -14,11 +15,23 @@ const FlightsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [flights, setFlights] = useState<any[]>([]);
   const [filteredFlights, setFilteredFlights] = useState<any[]>([]);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
     // Scroll to top on page load
     window.scrollTo(0, 0);
+
+    // Simulate API call to get flight data with progress
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 100);
 
     // Simulate API call to get flight data
     const timer = setTimeout(() => {
@@ -119,18 +132,37 @@ const FlightsPage = () => {
       setFlights(mockFlights);
       setFilteredFlights(mockFlights);
       setIsLoading(false);
+      clearInterval(progressInterval);
+      setLoadingProgress(100);
     }, 1500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
   }, []);
 
   const handleSearch = (searchData: any) => {
     setIsLoading(true);
+    setLoadingProgress(0);
+    
+    // Reset progress
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 8;
+      });
+    }, 100);
     
     // Simulate search API call
     setTimeout(() => {
       toast.success("Flight search completed!");
       setIsLoading(false);
+      clearInterval(progressInterval);
+      setLoadingProgress(100);
     }, 1000);
   };
 
@@ -177,11 +209,11 @@ const FlightsPage = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-1 bg-gray-50">
+      <main className="flex-1 bg-gray-50 pt-20">
         {/* Search Form */}
-        <div className="bg-sky-900 py-12">
+        <div className="bg-gray-100 py-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl font-bold text-white mb-6">Find Your Flight</h1>
+            <h1 className="text-3xl font-bold text-navy mb-6">Find Your Flight</h1>
             <FlightSearchForm onSearch={handleSearch} />
           </div>
         </div>
@@ -198,15 +230,24 @@ const FlightsPage = () => {
             <div className="md:col-span-3">
               <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
                 <h2 className="text-xl font-semibold">Flight Results</h2>
-                <p className="text-gray-500">
+                <p className="text-gray-500 mb-3">
                   {!isLoading && `${filteredFlights.length} flights found`}
                 </p>
+                
+                {/* Progress bar */}
+                {isLoading && (
+                  <Progress
+                    value={loadingProgress}
+                    className="h-1.5 transition-all duration-300"
+                  />
+                )}
               </div>
               
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-sky mb-4" />
+                <div className="flex flex-col items-center justify-center py-12 bg-white rounded-lg shadow-sm">
+                  <Loader2 className="h-8 w-8 animate-spin text-accent mb-4" />
                   <p className="text-gray-500">Searching for the best flights...</p>
+                  <p className="text-gray-400 text-sm mt-1">This might take a moment</p>
                 </div>
               ) : filteredFlights.length > 0 ? (
                 <div className="space-y-4">

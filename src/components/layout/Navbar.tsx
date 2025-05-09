@@ -25,9 +25,8 @@ const Navbar = () => {
 
   const navItems = [
     { title: t("home"), href: "/" },
-    { title: t("flights"), href: "/flights" },
     { title: t("manageBookings"), href: "/manage-bookings" },
-    { title: t("offers"), href: "/offers" },
+    { title: t("offers"), href: "#offers" },
     { title: t("support"), href: "/support" },
   ];
 

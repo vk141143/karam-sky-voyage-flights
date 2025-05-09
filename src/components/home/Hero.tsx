@@ -5,20 +5,31 @@ import FlightSearchForm from "@/components/flights/FlightSearchForm";
 
 const Hero = () => {
   return (
-    <section className="relative bg-gradient-to-b from-white to-gray-50 pt-28 pb-16 md:pt-32 md:pb-20">
-      {/* Background patterns - subtle and professional */}
-      <div className="absolute top-10 left-10 w-24 h-24 rounded-full bg-gray-100 opacity-70"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-gray-100 opacity-70"></div>
-      <div className="absolute top-40 right-20 w-16 h-16 rounded-full bg-gray-100 opacity-70"></div>
+    <section className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+      {/* Background Video */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+        <video
+          autoPlay
+          muted
+          loop
+          className="object-cover w-full h-full"
+          poster="/placeholder.svg"
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-traveling-through-the-clouds-4069-large.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      </div>
       
-      <div className="container mx-auto px-4">
+      {/* Content */}
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 gap-8">
           {/* Hero Content */}
           <div className="text-center mx-auto max-w-2xl appear-animated">
-            <h1 className="font-bold mb-4 text-navy">
+            <h1 className="font-bold mb-4 text-white">
               Explore the World <span className="text-accent">With Ease</span>
             </h1>
-            <p className="text-xl mb-8 text-gray-600 max-w-lg mx-auto">
+            <p className="text-xl mb-8 text-white/90 max-w-lg mx-auto">
               Find and book flights to your dream destinations. Hassle-free travel planning starts here.
             </p>
           </div>

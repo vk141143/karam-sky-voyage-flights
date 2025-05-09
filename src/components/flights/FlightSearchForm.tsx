@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Calendar, Search, Users } from "lucide-react";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import PassengerSelector from "./PassengerSelector";
+import { useNavigate } from "react-router-dom";
 
 interface FlightSearchFormProps {
   onSearch: (searchData: any) => void;
@@ -23,6 +24,7 @@ interface FlightSearchFormProps {
 
 const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [tripType, setTripType] = useState("round");
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
@@ -38,7 +40,7 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch({
+    const searchData = {
       tripType,
       origin,
       destination,
@@ -46,7 +48,11 @@ const FlightSearchForm = ({ onSearch, className = "" }: FlightSearchFormProps) =
       returnDate,
       passengerCounts,
       cabinClass,
-    });
+    };
+    
+    onSearch(searchData);
+    // Navigate to flights page after search
+    navigate("/flights", { state: { searchData } });
   };
 
   return (
