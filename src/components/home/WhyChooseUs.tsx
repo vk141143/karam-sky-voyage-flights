@@ -1,8 +1,36 @@
 
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 const WhyChooseUs = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTimeout(() => {
+            setIsLoaded(true);
+          }, 300);
+          observer.unobserve(entries[0].target);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const features = [
     {
       title: "Best Price Guarantee",
@@ -31,7 +59,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section ref={sectionRef} className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-navy dark:text-white mb-4">Why Choose SkyVoyage?</h2>
@@ -42,7 +70,13 @@ const WhyChooseUs = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
-            <Card key={index} className="border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift dark:bg-gray-800">
+            <Card 
+              key={index} 
+              className={`border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift dark:bg-gray-800 transition-all duration-700 ${
+                isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`}
+              style={{ transitionDelay: `${index * 150}ms` }}
+            >
               <CardContent className="p-6">
                 <div className="flex items-start">
                   <div className="mr-4 mt-1">

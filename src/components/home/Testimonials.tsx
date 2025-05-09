@@ -55,11 +55,11 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="mb-4 text-navy">What Our Customers Say</h2>
-          <p className="text-gray-600">
+          <h2 className="mb-4 text-navy dark:text-white">What Our Customers Say</h2>
+          <p className="text-gray-600 dark:text-gray-300">
             Discover why travelers choose SkyVoyage for their flight booking needs.
           </p>
         </div>
@@ -68,7 +68,7 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={testimonial.id} 
-              className={`border border-gray-200 transition-all duration-500 ${
+              className={`border border-gray-200 dark:border-gray-700 dark:bg-gray-800 transition-all duration-500 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               } hover-lift`}
               style={{ transitionDelay: `${index * 150}ms` }}
@@ -80,18 +80,18 @@ const Testimonials = () => {
                     <AvatarFallback>{testimonial.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="ml-4">
-                    <h4 className="font-medium text-navy">{testimonial.name}</h4>
-                    <p className="text-gray-500 text-sm">{testimonial.role}</p>
+                    <h4 className="font-medium text-navy dark:text-white">{testimonial.name}</h4>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">{testimonial.role}</p>
                   </div>
                 </div>
                 <div className="mb-3 flex">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <span key={i} className={i < testimonial.rating ? "text-yellow-400" : "text-gray-300"}>
+                    <span key={i} className={i < testimonial.rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}>
                       ★
                     </span>
                   ))}
                 </div>
-                <p className="text-gray-600">{testimonial.comment}</p>
+                <p className="text-gray-600 dark:text-gray-300">{testimonial.comment}</p>
               </CardContent>
             </Card>
           ))}
