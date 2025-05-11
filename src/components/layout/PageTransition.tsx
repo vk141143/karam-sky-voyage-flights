@@ -9,12 +9,13 @@ const PageTransition = ({ children }: PageTransitionProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Shorter timeout for better user experience
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1200);
+    }, 800);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [children]); // Re-run effect when children change
 
   if (isLoading) {
     return (
@@ -25,7 +26,7 @@ const PageTransition = ({ children }: PageTransitionProps) => {
             alt="Loading" 
             className="w-32 h-32 mb-4"
           />
-          <p className="text-foreground animate-pulse">Loading...</p>
+          <p className="text-foreground animate-pulse">Loading your adventure...</p>
         </div>
       </div>
     );

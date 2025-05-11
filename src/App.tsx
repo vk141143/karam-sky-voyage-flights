@@ -3,15 +3,17 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { LanguageProvider } from "./components/language/LanguageProvider";
 import PageTransition from "./components/layout/PageTransition";
 
-// Lazy load pages for better performance
-const Index = lazy(() => import("./pages/Index"));
+// Import Index directly instead of lazy loading it to avoid dynamic import issues
+import Index from "./pages/Index";
+
+// Lazy load other pages for better performance
 const FlightsPage = lazy(() => import("./pages/FlightsPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const RegisterPage = lazy(() => import("./pages/RegisterPage"));
