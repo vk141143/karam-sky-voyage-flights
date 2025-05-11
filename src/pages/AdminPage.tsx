@@ -10,6 +10,7 @@ import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Cell, Resp
 import { useToast } from "@/hooks/use-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label"; // Added import for the Label component
 import { Settings, User, Users, Plus } from "lucide-react";
 
 const COLORS = ["#0E86D4", "#055C9D", "#2C3E50", "#FF5722", "#E64A19"];
