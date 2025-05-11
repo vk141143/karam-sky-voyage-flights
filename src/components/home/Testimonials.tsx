@@ -16,10 +16,10 @@ const Testimonials = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Simulate loading delay for animation
+    // Slower loading delay for animation
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 800);
+    }, 1800);
 
     return () => clearTimeout(timer);
   }, []);
@@ -68,10 +68,10 @@ const Testimonials = () => {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={testimonial.id} 
-              className={`border border-gray-200 dark:border-gray-700 dark:bg-gray-800 transition-all duration-500 ${
+              className={`border border-gray-200 dark:border-gray-700 dark:bg-gray-800 transition-all duration-1000 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               } hover-lift`}
-              style={{ transitionDelay: `${index * 150}ms` }}
+              style={{ transitionDelay: `${index * 500}ms` }}
             >
               <CardContent className="p-6">
                 <div className="flex items-center mb-4">

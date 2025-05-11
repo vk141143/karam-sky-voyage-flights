@@ -1,463 +1,581 @@
 
-import { useState, useEffect } from "react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Cell, ResponsiveContainer } from "recharts";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Label } from "@/components/ui/label"; // Added import for the Label component
-import { Settings, User, Users, Plus } from "lucide-react";
+import { 
+  User,
+  ChevronRight,
+  CreditCard,
+  Settings,
+  PlusCircle,
+  Check,
+  X
+} from "lucide-react";
 
-const COLORS = ["#0E86D4", "#055C9D", "#2C3E50", "#FF5722", "#E64A19"];
+// Mock data for demonstration
+const mockUsers = [
+  { id: 1, name: "John Doe", email: "john@example.com", date: "2025-05-01", status: "Active" },
+  { id: 2, name: "Jane Smith", email: "jane@example.com", date: "2025-05-03", status: "Active" },
+  { id: 3, name: "Bob Johnson", email: "bob@example.com", date: "2025-05-05", status: "Inactive" },
+  { id: 4, name: "Sarah Williams", email: "sarah@example.com", date: "2025-05-07", status: "Active" },
+  { id: 5, name: "Michael Brown", email: "michael@example.com", date: "2025-05-09", status: "Active" },
+];
+
+const mockBookings = [
+  { id: "B-1001", user: "John Doe", from: "New York", to: "Paris", date: "2025-06-15", amount: "$450" },
+  { id: "B-1002", user: "Jane Smith", from: "London", to: "Tokyo", date: "2025-06-20", amount: "$780" },
+  { id: "B-1003", user: "Bob Johnson", from: "Dubai", to: "Singapore", date: "2025-06-25", amount: "$520" },
+  { id: "B-1004", user: "Sarah Williams", from: "Sydney", to: "Rome", date: "2025-07-01", amount: "$630" },
+];
 
 const AdminPage = () => {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
+  
+  // Form states
+  const [newOffer, setNewOffer] = useState({
+    title: "",
+    description: "",
+    discount: "",
+    expiry: "",
+    code: ""
+  });
 
-  // Simulated data
-  const [users, setUsers] = useState<{ id: number; name: string; email: string; dateJoined: string; status: string }[]>([]);
-  const [bookings, setBookings] = useState<{ id: number; user: string; destination: string; date: string; amount: number }[]>([]);
-  const [salesData, setSalesData] = useState<{ name: string; value: number }[]>([]);
-  const [destinationData, setDestinationData] = useState<{ name: string; visits: number }[]>([]);
-
-  // Mock data loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setUsers([
-        { id: 1, name: "John Doe", email: "john@example.com", dateJoined: "2025-04-18", status: "Active" },
-        { id: 2, name: "Jane Smith", email: "jane@example.com", dateJoined: "2025-04-17", status: "Active" },
-        { id: 3, name: "Robert Johnson", email: "robert@example.com", dateJoined: "2025-04-15", status: "Inactive" },
-        { id: 4, name: "Emily Davis", email: "emily@example.com", dateJoined: "2025-04-10", status: "Active" },
-        { id: 5, name: "Michael Wilson", email: "michael@example.com", dateJoined: "2025-04-05", status: "Active" },
-      ]);
-      
-      setBookings([
-        { id: 101, user: "John Doe", destination: "Paris", date: "2025-06-15", amount: 450 },
-        { id: 102, user: "Jane Smith", destination: "Tokyo", date: "2025-07-23", amount: 780 },
-        { id: 103, user: "Robert Johnson", destination: "New York", date: "2025-05-10", amount: 380 },
-        { id: 104, user: "Emily Davis", destination: "Dubai", date: "2025-08-05", amount: 520 },
-        { id: 105, user: "Michael Wilson", destination: "London", date: "2025-09-12", amount: 410 },
-      ]);
-      
-      setSalesData([
-        { name: "Flights", value: 4500 },
-        { name: "Hotels", value: 2300 },
-        { name: "Packages", value: 1800 },
-        { name: "Insurance", value: 900 },
-        { name: "Car Rentals", value: 600 }
-      ]);
-      
-      setDestinationData([
-        { name: "Paris", visits: 120 },
-        { name: "Tokyo", visits: 98 },
-        { name: "New York", visits: 86 },
-        { name: "Dubai", visits: 99 },
-        { name: "London", visits: 85 }
-      ]);
-      
-      setIsLoading(false);
-    }, 1200);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
+  const [newDestination, setNewDestination] = useState({
+    name: "",
+    country: "",
+    price: "",
+    imageUrl: ""
+  });
+  
   const handleOfferSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Offer Created",
-      description: "The special offer has been published successfully.",
-    });
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: "Offer Created",
+        description: `New offer "${newOffer.title}" has been added successfully.`
+      });
+      
+      setNewOffer({
+        title: "",
+        description: "",
+        discount: "",
+        expiry: "",
+        code: ""
+      });
+    }, 1000);
   };
-
+  
   const handleDestinationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Destination Added",
-      description: "The new destination has been added to popular destinations.",
-    });
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: "Destination Added",
+        description: `New destination "${newDestination.name}, ${newDestination.country}" has been added successfully.`
+      });
+      
+      setNewDestination({
+        name: "",
+        country: "",
+        price: "",
+        imageUrl: ""
+      });
+    }, 1000);
+  };
+  
+  const handleOfferChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewOffer(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const handleDestinationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewDestination(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 py-8 px-4 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-navy dark:text-white mb-2">Admin Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-300">Manage your travel platform in one place</p>
-          </div>
-
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-            <TabsList className="grid grid-cols-4 gap-4 bg-transparent">
-              <TabsTrigger 
-                value="dashboard" 
-                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow"
-              >
-                Dashboard
-              </TabsTrigger>
-              <TabsTrigger 
-                value="users" 
-                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow"
-              >
-                Users
-              </TabsTrigger>
-              <TabsTrigger 
-                value="offers" 
-                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow"
-              >
-                Manage Offers
-              </TabsTrigger>
-              <TabsTrigger 
-                value="destinations" 
-                className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow"
-              >
-                Destinations
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="dashboard" className="space-y-4 animate-content-load">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-accent"
-                    >
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
-                    <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Bookings</CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-accent"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
-                    <p className="text-xs text-muted-foreground">+180.1% from last month</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-                    <Users className="h-4 w-4 text-accent" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">+201 since last week</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-accent"
-                    >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">32.5%</div>
-                    <p className="text-xs text-muted-foreground">+7% from last month</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="col-span-1">
-                  <CardHeader>
-                    <CardTitle>Revenue by Category</CardTitle>
-                    <CardDescription>Distribution of sales across different categories</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    {isLoading ? (
-                      <div className="w-full h-[300px] flex items-center justify-center">
-                        <Skeleton className="w-[300px] h-[300px] rounded-full" />
-                      </div>
-                    ) : (
-                      <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                          <Pie
-                            data={salesData}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={false}
-                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                          >
-                            {salesData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                          <Legend />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    )}
-                  </CardContent>
-                </Card>
-                
-                <Card className="col-span-1">
-                  <CardHeader>
-                    <CardTitle>Popular Destinations</CardTitle>
-                    <CardDescription>Most visited destinations this month</CardDescription>
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    {isLoading ? (
-                      <div className="space-y-3">
-                        <Skeleton className="h-[250px] w-full" />
-                      </div>
-                    ) : (
-                      <ResponsiveContainer width="100%" height={300}>
-                        <BarChart
-                          data={destinationData}
-                          margin={{
-                            top: 5,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <XAxis dataKey="name" />
-                          <YAxis />
-                          <Tooltip />
-                          <Legend />
-                          <Bar dataKey="visits" fill="#0E86D4" name="Visits" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-
+      <div className="bg-sky/10 dark:bg-navy-dark py-6">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold text-navy dark:text-white">Admin Dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Manage users, bookings, offers, and destinations
+          </p>
+        </div>
+      </div>
+      
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <Tabs defaultValue="dashboard" className="space-y-6" onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-4 w-full max-w-3xl mb-8">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+              <Settings size={16} /> Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <User size={16} /> Users
+            </TabsTrigger>
+            <TabsTrigger value="offers" className="flex items-center gap-2">
+              <PlusCircle size={16} /> Offers
+            </TabsTrigger>
+            <TabsTrigger value="destinations" className="flex items-center gap-2">
+              <ChevronRight size={16} /> Destinations
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="dashboard" className="space-y-6 animate-fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>Recent Bookings</CardTitle>
-                  <CardDescription>Latest travel bookings on your platform</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="space-y-3">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="flex items-center space-x-4">
-                          <Skeleton className="h-12 w-12 rounded-full" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[250px]" />
-                            <Skeleton className="h-4 w-[200px]" />
-                          </div>
-                        </div>
-                      ))}
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Total Users</p>
+                      <h3 className="text-2xl font-bold mt-1">1,245</h3>
                     </div>
-                  ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>ID</TableHead>
-                          <TableHead>User</TableHead>
-                          <TableHead>Destination</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead className="text-right">Amount</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {bookings.map((booking) => (
-                          <TableRow key={booking.id}>
-                            <TableCell className="font-medium">{booking.id}</TableCell>
-                            <TableCell>{booking.user}</TableCell>
-                            <TableCell>{booking.destination}</TableCell>
-                            <TableCell>{booking.date}</TableCell>
-                            <TableCell className="text-right">${booking.amount}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  )}
+                    <div className="bg-sky/10 p-3 rounded-full">
+                      <User className="h-6 w-6 text-sky" />
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-green-500 flex items-center">
+                    <span>+12% from last month</span>
+                  </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="users" className="animate-content-load">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Total Bookings</p>
+                      <h3 className="text-2xl font-bold mt-1">873</h3>
+                    </div>
+                    <div className="bg-accent/10 p-3 rounded-full">
+                      <CreditCard className="h-6 w-6 text-accent" />
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-green-500 flex items-center">
+                    <span>+5% from last month</span>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Active Offers</p>
+                      <h3 className="text-2xl font-bold mt-1">12</h3>
+                    </div>
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <PlusCircle className="h-6 w-6 text-purple-500" />
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-orange-500 flex items-center">
+                    <span>3 expiring soon</span>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Popular Destinations</p>
+                      <h3 className="text-2xl font-bold mt-1">24</h3>
+                    </div>
+                    <div className="bg-green-100 p-3 rounded-full">
+                      <ChevronRight className="h-6 w-6 text-green-500" />
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-green-500 flex items-center">
+                    <span>Paris is most booked</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>User Management</CardTitle>
-                  <CardDescription>View and manage registered users</CardDescription>
+                  <CardTitle className="text-lg">Recent Users</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="space-y-3">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="flex items-center space-x-4">
-                          <Skeleton className="h-12 w-12 rounded-full" />
-                          <div className="space-y-2">
-                            <Skeleton className="h-4 w-[250px]" />
-                            <Skeleton className="h-4 w-[200px]" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>ID</TableHead>
-                          <TableHead>Name</TableHead>
-                          <TableHead>Email</TableHead>
-                          <TableHead>Date Joined</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {users.map((user) => (
-                          <TableRow key={user.id}>
-                            <TableCell className="font-medium">{user.id}</TableCell>
-                            <TableCell>{user.name}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.dateJoined}</TableCell>
-                            <TableCell>
-                              <span className={`px-2 py-1 rounded-full text-xs ${
-                                user.status === "Active" 
-                                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" 
-                                  : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">Name</th>
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">Date</th>
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mockUsers.slice(0, 5).map(user => (
+                          <tr key={user.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="p-4">{user.name}</td>
+                            <td className="p-4 text-gray-500">{user.date}</td>
+                            <td className="p-4">
+                              <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                               }`}>
                                 {user.status}
                               </span>
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <Button variant="outline" size="sm">
-                                <Settings className="h-4 w-4 mr-1" />
-                                Manage
-                              </Button>
-                            </TableCell>
-                          </TableRow>
+                            </td>
+                          </tr>
                         ))}
-                      </TableBody>
-                    </Table>
-                  )}
+                      </tbody>
+                    </table>
+                  </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="offers" className="animate-content-load">
+              
               <Card>
                 <CardHeader>
-                  <CardTitle>Create Special Offer</CardTitle>
-                  <CardDescription>Add new limited-time offers for flights</CardDescription>
+                  <CardTitle className="text-lg">Recent Bookings</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">ID</th>
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">Route</th>
+                          <th className="text-left p-4 text-sm text-gray-500 font-medium">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {mockBookings.slice(0, 5).map(booking => (
+                          <tr key={booking.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+                            <td className="p-4">{booking.id}</td>
+                            <td className="p-4">{booking.from} → {booking.to}</td>
+                            <td className="p-4 font-medium">{booking.amount}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="users" className="animate-fade-in">
+            <Card>
+              <CardHeader>
+                <CardTitle>All Users</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left p-4 text-sm text-gray-500 font-medium">Name</th>
+                        <th className="text-left p-4 text-sm text-gray-500 font-medium">Email</th>
+                        <th className="text-left p-4 text-sm text-gray-500 font-medium">Date</th>
+                        <th className="text-left p-4 text-sm text-gray-500 font-medium">Status</th>
+                        <th className="text-left p-4 text-sm text-gray-500 font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mockUsers.map(user => (
+                        <tr key={user.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
+                          <td className="p-4">{user.name}</td>
+                          <td className="p-4">{user.email}</td>
+                          <td className="p-4 text-gray-500">{user.date}</td>
+                          <td className="p-4">
+                            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              user.status === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                            }`}>
+                              {user.status}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <div className="flex space-x-2">
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <Check className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="offers" className="animate-fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Add New Offer</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleOfferSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="offerTitle">Offer Title</Label>
-                        <Input id="offerTitle" placeholder="e.g. Summer Special" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="offerCode">Promo Code</Label>
-                        <Input id="offerCode" placeholder="e.g. SUMMER25" required />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Offer Title</Label>
+                      <Input 
+                        id="title" 
+                        name="title" 
+                        placeholder="Summer Special" 
+                        value={newOffer.title}
+                        onChange={handleOfferChange}
+                        required
+                      />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea 
+                        id="description" 
+                        name="description" 
+                        placeholder="Describe the offer details" 
+                        value={newOffer.description}
+                        onChange={handleOfferChange}
+                        required
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="discountAmount">Discount Amount (%)</Label>
-                        <Input id="discountAmount" type="number" min="1" max="100" placeholder="25" required />
+                        <Label htmlFor="discount">Discount Amount</Label>
+                        <Input 
+                          id="discount" 
+                          name="discount" 
+                          placeholder="15% OFF" 
+                          value={newOffer.discount}
+                          onChange={handleOfferChange}
+                          required
+                        />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="expiryDate">Expiry Date</Label>
-                        <Input id="expiryDate" type="date" required />
+                        <Label htmlFor="code">Promo Code</Label>
+                        <Input 
+                          id="code" 
+                          name="code" 
+                          placeholder="SUMMER15" 
+                          value={newOffer.code}
+                          onChange={handleOfferChange}
+                          required
+                        />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="offerDescription">Description</Label>
-                      <Input id="offerDescription" placeholder="Brief description of the offer" required />
+                      <Label htmlFor="expiry">Expiry Date</Label>
+                      <Input 
+                        id="expiry" 
+                        name="expiry" 
+                        type="date" 
+                        value={newOffer.expiry}
+                        onChange={handleOfferChange}
+                        required
+                      />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="offerBadge">Badge Text</Label>
-                      <Input id="offerBadge" placeholder="e.g. Limited Time, Popular" />
-                    </div>
-                    <Button type="submit" className="bg-accent hover:bg-accent-dark">
-                      <Plus className="mr-2 h-4 w-4" /> Create Offer
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Adding Offer..." : "Add Offer"}
                     </Button>
                   </form>
                 </CardContent>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="destinations" className="animate-content-load">
+              
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Popular Destination</CardTitle>
-                  <CardDescription>Add new destinations to the popular section</CardDescription>
+                  <CardTitle>Active Offers</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-4 p-4">
+                    {[1, 2, 3].map((_, index) => (
+                      <div key={index} className="flex justify-between items-center p-4 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <div>
+                          <h4 className="font-medium">Summer Special</h4>
+                          <p className="text-sm text-gray-500">15% OFF | Code: SUMMER15</p>
+                          <p className="text-xs text-gray-400 mt-1">Expires: Aug 31, 2025</p>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="destinations" className="animate-fade-in">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Add New Destination</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleDestinationSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="destinationName">Destination Name</Label>
-                        <Input id="destinationName" placeholder="e.g. Barcelona" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="destinationCountry">Country</Label>
-                        <Input id="destinationCountry" placeholder="e.g. Spain" required />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="name">City Name</Label>
+                      <Input 
+                        id="name" 
+                        name="name" 
+                        placeholder="Paris" 
+                        value={newDestination.name}
+                        onChange={handleDestinationChange}
+                        required
+                      />
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="startingPrice">Starting Price ($)</Label>
-                        <Input id="startingPrice" type="number" placeholder="299" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="imageUrl">Image URL</Label>
-                        <Input id="imageUrl" type="url" placeholder="https://example.com/image.jpg" required />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="country">Country</Label>
+                      <Input 
+                        id="country" 
+                        name="country" 
+                        placeholder="France" 
+                        value={newDestination.country}
+                        onChange={handleDestinationChange}
+                        required
+                      />
                     </div>
-                    <Button type="submit" className="bg-accent hover:bg-accent-dark">
-                      <Plus className="mr-2 h-4 w-4" /> Add Destination
+                    <div className="space-y-2">
+                      <Label htmlFor="price">Starting Price</Label>
+                      <Input 
+                        id="price" 
+                        name="price" 
+                        placeholder="$299" 
+                        value={newDestination.price}
+                        onChange={handleDestinationChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="imageUrl">Image URL</Label>
+                      <Input 
+                        id="imageUrl" 
+                        name="imageUrl" 
+                        placeholder="https://example.com/image.jpg" 
+                        value={newDestination.imageUrl}
+                        onChange={handleDestinationChange}
+                        required
+                      />
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Adding Destination..." : "Add Destination"}
                     </Button>
                   </form>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Popular Destinations</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="space-y-4 p-4">
+                    <div className="flex items-center p-3 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <div className="w-16 h-16 rounded-md overflow-hidden mr-4">
+                        <img 
+                          src="https://images.unsplash.com/photo-1499856871958-5b9357976b82?w=150" 
+                          alt="Paris" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium">Paris</h4>
+                        <p className="text-sm text-gray-500">France</p>
+                        <p className="text-xs text-accent mt-1">From $299</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Settings className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center p-3 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <div className="w-16 h-16 rounded-md overflow-hidden mr-4">
+                        <img 
+                          src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=150" 
+                          alt="New York" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium">New York</h4>
+                        <p className="text-sm text-gray-500">United States</p>
+                        <p className="text-xs text-accent mt-1">From $350</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Settings className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center p-3 border rounded-md hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <div className="w-16 h-16 rounded-md overflow-hidden mr-4">
+                        <img 
+                          src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=150" 
+                          alt="Tokyo" 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium">Tokyo</h4>
+                        <p className="text-sm text-gray-500">Japan</p>
+                        <p className="text-xs text-accent mt-1">From $650</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Settings className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
       <Footer />
     </div>

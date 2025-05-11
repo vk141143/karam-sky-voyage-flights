@@ -19,10 +19,10 @@ const SpecialOffers = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Simulate loading delay for animation
+    // Slower loading animation delay
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 700);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -76,10 +76,10 @@ const SpecialOffers = () => {
           {offers.map((offer, index) => (
             <Card 
               key={offer.id} 
-              className={`border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift transition-all duration-500 dark:bg-gray-800 ${
+              className={`border border-gray-200 dark:border-gray-700 overflow-hidden hover-lift transition-all duration-1000 dark:bg-gray-800 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ transitionDelay: `${index * 400}ms` }}
             >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">

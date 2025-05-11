@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -12,6 +12,7 @@ import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 
 const LoginPage = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +26,11 @@ const LoginPage = () => {
     setTimeout(() => {
       setIsLoading(false);
       console.log("Login attempted with:", { email, password });
+      
+      // Admin credentials check
+      if (email === "admin@skyvoyage.com" && password === "admin123") {
+        navigate("/admin");
+      }
     }, 1500);
   };
 
@@ -99,7 +105,7 @@ const LoginPage = () => {
           <CardFooter className="flex justify-center pb-6 pt-0">
             <p className="text-sm text-center">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-accent hover:underline font-medium">
+              <Link to="/register" className="text-accent hover:underline font-medium">
                 Sign up
               </Link>
             </p>

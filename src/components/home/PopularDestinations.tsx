@@ -17,10 +17,10 @@ const PopularDestinations = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Simulate loading delay for animation purposes
+    // Slower loading animation delay
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 500);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -77,10 +77,10 @@ const PopularDestinations = () => {
           {destinations.map((destination, index) => (
             <Card 
               key={destination.id} 
-              className={`overflow-hidden hover-lift transition-all duration-500 ${
+              className={`overflow-hidden hover-lift transition-all duration-1000 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              style={{ transitionDelay: `${index * 300}ms` }}
             >
               <div className="relative h-48 overflow-hidden">
                 <img 

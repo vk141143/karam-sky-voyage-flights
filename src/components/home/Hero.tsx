@@ -9,19 +9,14 @@ const Hero = () => {
   
   return (
     <section className="relative pt-16 pb-16 md:pt-20 md:pb-20 overflow-hidden">
-      {/* Background Video */}
+      {/* Background GIF */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
-        <video
-          autoPlay
-          muted
-          loop
+        <img
+          src="/lovable-uploads/4d48ff10-e05d-4b00-9d50-78006466a550.gif"
+          alt="Flight background"
           className="object-cover w-full h-full"
-          poster="/placeholder.svg"
-        >
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-traveling-through-the-clouds-4069-large.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       </div>
       
       {/* Content */}
