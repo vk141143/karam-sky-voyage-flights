@@ -27,7 +27,7 @@ const Navbar = () => {
   const navItems = [
     { title: t("home"), href: "/" },
     { title: t("manageBookings"), href: "/manage-bookings" },
-    { title: t("offers"), href: "#offers" },
+    { title: t("offers"), href: "/offers" },
     { title: t("support"), href: "/support" },
   ];
 
@@ -73,7 +73,7 @@ const Navbar = () => {
             </Link>
           </Button>
           <Button size="sm" asChild className="bg-accent hover:bg-accent-dark text-white transition-all duration-200">
-            <Link to="/signup">{t("signup")}</Link>
+            <Link to="/register">{t("signup")}</Link>
           </Button>
         </div>
 
@@ -112,7 +112,7 @@ const Navbar = () => {
                 </Link>
               </Button>
               <Button size="sm" asChild className="bg-accent hover:bg-accent-dark text-white transition-all duration-200">
-                <Link to="/signup">{t("signup")}</Link>
+                <Link to="/register">{t("signup")}</Link>
               </Button>
             </div>
           </div>

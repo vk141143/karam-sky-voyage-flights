@@ -3,11 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { LanguageProvider } from "./components/language/LanguageProvider";
+import PageTransition from "./components/layout/PageTransition";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -17,6 +18,7 @@ const RegisterPage = lazy(() => import("./pages/RegisterPage"));
 const ManageBookingsPage = lazy(() => import("./pages/ManageBookingsPage"));
 const SupportPage = lazy(() => import("./pages/SupportPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
+const OffersPage = lazy(() => import("./pages/OffersPage"));
 
 // Create a Query client
 const queryClient = new QueryClient();
@@ -31,6 +33,15 @@ const PageLoading = () => (
   </div>
 );
 
+// Route component with transition
+const TransitionedRoute = ({ element }: { element: React.ReactNode }) => {
+  return (
+    <PageTransition>
+      {element}
+    </PageTransition>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
@@ -41,13 +52,14 @@ const App = () => (
           <BrowserRouter>
             <Suspense fallback={<PageLoading />}>
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/flights" element={<FlightsPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/manage-bookings" element={<ManageBookingsPage />} />
-                <Route path="/support" element={<SupportPage />} />
-                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/" element={<TransitionedRoute element={<Index />} />} />
+                <Route path="/flights" element={<TransitionedRoute element={<FlightsPage />} />} />
+                <Route path="/login" element={<TransitionedRoute element={<LoginPage />} />} />
+                <Route path="/register" element={<TransitionedRoute element={<RegisterPage />} />} />
+                <Route path="/manage-bookings" element={<TransitionedRoute element={<ManageBookingsPage />} />} />
+                <Route path="/support" element={<TransitionedRoute element={<SupportPage />} />} />
+                <Route path="/admin" element={<TransitionedRoute element={<AdminPage />} />} />
+                <Route path="/offers" element={<TransitionedRoute element={<OffersPage />} />} />
                 {/* Catch-all route */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

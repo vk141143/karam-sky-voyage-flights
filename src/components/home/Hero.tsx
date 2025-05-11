@@ -36,21 +36,18 @@ const Hero = () => {
               Find and book flights to your dream destinations. Hassle-free travel planning starts here.
             </p>
             
-            {/* Theme-based image */}
-            <div className="hidden md:block rounded-lg overflow-hidden shadow-xl">
-              {theme === 'dark' ? (
-                <img 
-                  src="https://images.unsplash.com/photo-1470813740244-df37b8c1edcb"
-                  alt="Travel inspiration - night view" 
-                  className="w-full h-auto rounded-lg"
-                />
-              ) : (
-                <img 
-                  src="https://images.unsplash.com/photo-1500673922987-e212871fec22"
-                  alt="Travel inspiration - day view" 
-                  className="w-full h-auto rounded-lg"
-                />
-              )}
+            {/* Theme-based image with promotional gif */}
+            <div className="hidden md:block rounded-lg overflow-hidden shadow-xl relative">
+              <img 
+                src="/lovable-uploads/cb77f374-9956-49ad-8ffd-02d98680cb64.png"
+                alt="10% off mobile booking promo" 
+                className="w-full h-auto rounded-lg"
+              />
+              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                <Button size="lg" variant="destructive" className="font-bold">
+                  10% OFF - Book Now!
+                </Button>
+              </div>
             </div>
           </div>
 

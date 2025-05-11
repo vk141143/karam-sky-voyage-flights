@@ -32,6 +32,8 @@ const Index = () => {
               entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                   entry.target.classList.add("animate-content-load");
+                  entry.target.classList.add("opacity-100");
+                  entry.target.classList.remove("opacity-0");
                   // Once animated, no need to observe anymore
                   observer.unobserve(entry.target);
                 }
@@ -70,19 +72,19 @@ const Index = () => {
       <main className="flex-1">
         <Hero />
         
-        <div ref={whyChooseUsRef} className="opacity-0 transition-opacity duration-700">
+        <div ref={whyChooseUsRef} className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out">
           <WhyChooseUs />
         </div>
         
-        <div ref={destinationsRef} className="opacity-0 transition-opacity duration-700">
+        <div ref={destinationsRef} className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out">
           <PopularDestinations />
         </div>
         
-        <div ref={offersRef} className="opacity-0 transition-opacity duration-700" id="offers">
+        <div ref={offersRef} className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out" id="offers">
           <SpecialOffers />
         </div>
         
-        <div ref={testimonialsRef} className="opacity-0 transition-opacity duration-700">
+        <div ref={testimonialsRef} className="opacity-0 transform translate-y-8 transition-all duration-1000 ease-out">
           <Testimonials />
         </div>
       </main>
